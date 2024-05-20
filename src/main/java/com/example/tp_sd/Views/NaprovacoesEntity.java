@@ -1,23 +1,28 @@
 package com.example.tp_sd.Views;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Immutable;
 
 @Entity
-@Immutable
 @Table(name = "naprovacoes", schema = "db_escolajardinagem", catalog = "")
 public class NaprovacoesEntity {
     @Id
-    private long idA;
     @Basic
     @Column(name = "ID")
     private int id;
+    @Basic
+    @Column(name = "nome")
+    private String nome;
     @Basic
     @Column(name = "Positivas")
     private long positivas;
 
     public int getId() {
         return id;
+    }
+
+
+    public String getNome() {
+        return nome;
     }
 
 
@@ -35,6 +40,7 @@ public class NaprovacoesEntity {
 
         if (id != that.id) return false;
         if (positivas != that.positivas) return false;
+        if (nome != null ? !nome.equals(that.nome) : that.nome != null) return false;
 
         return true;
     }
@@ -42,6 +48,7 @@ public class NaprovacoesEntity {
     @Override
     public int hashCode() {
         int result = id;
+        result = 31 * result + (nome != null ? nome.hashCode() : 0);
         result = 31 * result + (int) (positivas ^ (positivas >>> 32));
         return result;
     }

@@ -51,4 +51,20 @@ public class Main {
         model.addAttribute("cursos", cursoInterface.findAll());
         return "Estatisticas/HorasDosCursos";
     }
+    @GetMapping(path="/aprovacoesDosCursos")
+    public String aprovacoesDosCursos(Model model) {
+        model.addAttribute("cursos", naprovacoesInterface.findAll());
+        return "Estatisticas/AprovacoesDosCursos";
+    }
+    @GetMapping(path="/idadeMediaDeCurso")
+    public String idadeMediaDeCurso(Model model) {
+        model.addAttribute("cursos", idadeMediaInterface.findAll());
+        return "Estatisticas/IdadeMediaDeCurso";
+    }
+    @GetMapping(path="/deOndeVemOsNossosAlunos")
+    public String deOndeVemOsNossosAlunos(Model model) {
+        model.addAttribute("cursos", provenienciasInterface.findAll());
+        return "Estatisticas/DeOndeVemOsNossosAlunos";
+    }
+
 }
