@@ -8,7 +8,9 @@ import org.hibernate.annotations.Immutable;
 @Table(name = "cursosfuncionamento", schema = "db_escolajardinagem", catalog = "")
 public class CursosfuncionamentoEntity {
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private int id;
 
     @Basic
     @Column(name = "Nome")
