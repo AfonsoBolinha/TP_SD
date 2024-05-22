@@ -5,12 +5,19 @@ import com.example.tp_sd.Views.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/")
 public class Main {
+    int userID = 3;
     @Autowired // This means to get the bean called userRepository
     private AlunoInterface alunoInterface;
     @Autowired
@@ -31,6 +38,10 @@ public class Main {
     private ProvenienciasInterface provenienciasInterface;
     @Autowired
     private CursosfuncionamentoInterface cursosfuncionamentoInterface;
+    @Autowired
+    private ProfessoresInterface professoresInterface;
+    @Autowired
+    private AlunosInterface alunosInterface;
 
     @GetMapping(path="/Estatisticas")
     public String estatisticas(Model model) {
@@ -66,5 +77,111 @@ public class Main {
         model.addAttribute("cursos", provenienciasInterface.findAll());
         return "Estatisticas/DeOndeVemOsNossosAlunos";
     }
+
+    @GetMapping(path="/InscreverAluno")
+    public String inscreverAluno(Model model) {
+        if (userID==3){
+            model.addAttribute("aluno", new AlunoEntity());
+            return "Inscricao/InscreverAluno";
+        }
+        else{
+            return "redirect:/";
+        }
+    }
+    @PostMapping(path="/InscreverAlunoPost")
+    public @ResponseBody String inscreverAluno(@RequestParam String nome,
+                                             @RequestParam String contacto,
+                                             @RequestParam String dataNascimento,
+                                             @RequestParam String proviniência) {
+
+        AlunoEntity aluno = new AlunoEntity();
+        aluno.setNome(nome);
+        aluno.setContacto(contacto);
+
+        // Conversão de dataNascimento de String para Timestamp
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Formato para data sem hora
+            Date parsedDate = dateFormat.parse(dataNascimento);
+            Timestamp timestamp = new Timestamp(parsedDate.getTime());
+            aluno.setDataNascimento(timestamp);
+        } catch (ParseException e) {
+            e.printStackTrace(); // Trate o erro conforme necessário
+        }
+
+        aluno.setProviniência(proviniência);
+        aluno.setStatus(1);
+        alunoInterface.save(aluno);
+        return "redirect:/";
+    }
+
+    @GetMapping(path="/InscreverCurso")
+    public String inscreverCurso(Model model) {
+        if (userID==3){
+            model.addAttribute("curso", new CursoEntity());
+            model.addAttribute("professores", professoresInterface.findAll());
+            return "Inscricao/InscreverCurso";
+        }
+        else{
+            return "redirect:/";
+        }
+    }
+    @PostMapping(path="/InscreverCursoPost")
+    public @ResponseBody String inscreverCurso(@RequestParam String nome,
+                                               @RequestParam Integer ano,
+                                               @RequestParam Integer idProfessor,
+                                               @RequestParam Integer nHoras) {
+
+        CursoEntity curso = new CursoEntity();
+        curso.setNome(nome);
+        curso.setAno(ano);
+        curso.setIdProfessor(idProfessor);
+        curso.setnHoras(nHoras);
+        cursoInterface.save(curso);
+
+        // Obter o ID do curso recém-criado
+        Integer idCurso = curso.getId();
+        ParticipanteEntity participante = new ParticipanteEntity();
+        participante.setIdCurso(idCurso);
+        participante.setIdAluno(idProfessor);
+        participanteInterface.save(participante);
+        return "redirect:/";
+    }
+
+    @GetMapping(path="/InscreverProfessor")
+    public String inscreverProfessor(Model model) {
+        if (userID==3){
+            model.addAttribute("professor", new AlunoEntity());
+            return "Inscricao/InscreverProfessor";
+        }
+        else{
+            return "redirect:/";
+        }
+    }
+    @PostMapping(path="/InscreverProfessorPost")
+    public @ResponseBody String inscreverProfessor(@RequestParam String nome,
+                                               @RequestParam String contacto,
+                                               @RequestParam String dataNascimento,
+                                               @RequestParam String proviniência) {
+
+        AlunoEntity professor = new AlunoEntity();
+        professor.setNome(nome);
+        professor.setContacto(contacto);
+        // Conversão de dataNascimento de String para Timestamp
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Formato para data sem hora
+            Date parsedDate = dateFormat.parse(dataNascimento);
+            Timestamp timestamp = new Timestamp(parsedDate.getTime());
+            professor.setDataNascimento(timestamp);
+        } catch (ParseException e) {
+            e.printStackTrace(); // Trate o erro conforme necessário
+        }
+
+        professor.setProviniência(proviniência);
+        professor.setStatus(2);
+        alunoInterface.save(professor);
+        return "redirect:/";
+    }
+
+    //
 
 }
