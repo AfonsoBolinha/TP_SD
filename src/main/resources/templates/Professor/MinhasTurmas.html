@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Turmas</title>
+</head>
+<body>
+<h1>Minhas Turmas</h1>
+<div th:if="${cursos != null}">
+    <ul>
+        <li th:each="curso : ${cursos}">
+            <a th:href="@{'/curso/' + ${curso.idCurso}}">
+                <button type="button" th:text="${curso.nome}"></button>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

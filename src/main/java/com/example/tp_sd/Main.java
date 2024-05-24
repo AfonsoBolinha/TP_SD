@@ -17,7 +17,8 @@ import java.util.List;
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/")
 public class Main {
-    int userID = 3;
+    int userStatus = 2;
+    int userId=2;
     @Autowired // This means to get the bean called userRepository
     private AlunoInterface alunoInterface;
     @Autowired
@@ -42,6 +43,10 @@ public class Main {
     private ProfessoresInterface professoresInterface;
     @Autowired
     private AlunosInterface alunosInterface;
+    @Autowired
+    private ProfessorcursoInterface professorcursoInterface;
+    @Autowired
+    private AlunocursoInterface alunocursoInterface;
 
     @GetMapping(path="/Estatisticas")
     public String estatisticas(Model model) {
@@ -80,7 +85,7 @@ public class Main {
 
     @GetMapping(path="/InscreverAluno")
     public String inscreverAluno(Model model) {
-        if (userID==3){
+        if (userStatus==3){
             model.addAttribute("aluno", new AlunoEntity());
             return "Inscricao/InscreverAluno";
         }
@@ -116,7 +121,7 @@ public class Main {
 
     @GetMapping(path="/InscreverCurso")
     public String inscreverCurso(Model model) {
-        if (userID==3){
+        if (userStatus==3){
             model.addAttribute("curso", new CursoEntity());
             model.addAttribute("professores", professoresInterface.findAll());
             return "Inscricao/InscreverCurso";
@@ -149,7 +154,7 @@ public class Main {
 
     @GetMapping(path="/InscreverProfessor")
     public String inscreverProfessor(Model model) {
-        if (userID==3){
+        if (userStatus==3){
             model.addAttribute("professor", new AlunoEntity());
             return "Inscricao/InscreverProfessor";
         }
@@ -182,6 +187,21 @@ public class Main {
         return "redirect:/";
     }
 
-    //
+    @GetMapping(path="/MinhasTurmas")
+    public String minhasTurmas(Model model) {
+        if (userStatus == 2) {
+            model.addAttribute("cursos", professorcursoInterface.minhasTurmas(userId));
+            return "Professor/MinhasTurmas";
+        } else {
+            return "redirect:/";
+        }
+    }
 
+    //ERROR
+    @GetMapping("/curso/{idCurso}")
+    public String getCurso(@PathVariable("idCurso") int idCurso, Model model) {
+        model.addAttribute("alunos", alunocursoInterface.alunos(idCurso));
+        return "Professor/Turma";
+    }
+    //ERROR
 }
