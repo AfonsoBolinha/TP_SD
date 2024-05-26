@@ -26,6 +26,8 @@ public class AlunoEntity {
     @Basic
     @Column(name = "Status")
     private Integer status;
+    @Column(name = "Password")
+    private String password;
 
     public int getId() {
         return id;
@@ -74,6 +76,10 @@ public class AlunoEntity {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public void setPassword(String password) {this.password = password; }
+
+    public String getPassword() { return password; }
 
     @Override
     public boolean equals(Object o) {
