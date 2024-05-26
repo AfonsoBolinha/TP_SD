@@ -48,6 +48,10 @@ public class Main {
     @Autowired
     private AlunocursoInterface alunocursoInterface;
 
+    // Para o login
+    @Autowired
+    private AlunoService alunoService;
+
     @GetMapping(path="/Estatisticas")
     public String estatisticas(Model model) {
         return "Estatisticas/LandingEstatisticas";
@@ -204,4 +208,21 @@ public class Main {
         return "Professor/Turma";
     }
     //ERROR
+
+
+    // Login
+    // Falta modificar algumas coisas
+    @PostMapping(path="/login")
+    public String login(@RequestParam("contacto") String contacto,
+                        @RequestParam("password") String password,
+                        Model model) {
+        boolean isAuthenticated = alunoService.authenticate(contacto, password);
+        if(isAuthenticated) {
+            return "home";
+        }
+        else {
+            model.addAttribute("error", "Invalid contacto ou palavra passe");
+            return "index";
+        }
+    }
 }
