@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="pt">
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h2>Login</h2>
+<h1>Login</h1>
 <form th:action="@{/login}" method="post">
     <div>
         <label for="contacto">Contacto:</label>
@@ -16,6 +17,7 @@
     </div>
     <div>
         <button type="submit">Login</button>
+        <button type="button" class="btn-register" onclick="window.location.href='/InscreverAluno'">Registrar</button>
     </div>
 </form>
 <div th:if="${error}" style="color: red;">
@@ -23,4 +25,3 @@
 </div>
 </body>
 </html>
-

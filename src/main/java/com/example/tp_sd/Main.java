@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 
 @Controller // This means that this class is a Controller
@@ -52,6 +51,26 @@ public class Main {
     @Autowired
     private AlunoService alunoService;
 
+    @GetMapping(path="/")
+    public String index(Model model) {
+        return "index";
+    }
+    @GetMapping(path="/homeAluno")
+    public String homeAluno(Model model) {
+        return "homeAluno";
+    }
+    @GetMapping(path="/homeProfessor")
+    public String homeProfessor(Model model) {
+        return "homeProfessor";
+    }
+    @GetMapping(path="/homeAdmin")
+    public String homeAdmin(Model model) {
+        return "homeAdmin";
+    }
+    @GetMapping(path="/Turma")
+    public String Turma(Model model) {
+        return "Professor/Turma";
+    }
     @GetMapping(path="/Estatisticas")
     public String estatisticas(Model model) {
         return "Estatisticas/LandingEstatisticas";
@@ -89,23 +108,20 @@ public class Main {
 
     @GetMapping(path="/InscreverAluno")
     public String inscreverAluno(Model model) {
-        if (userStatus==3){
             model.addAttribute("aluno", new AlunoEntity());
             return "Inscricao/InscreverAluno";
-        }
-        else{
-            return "redirect:/";
-        }
     }
     @PostMapping(path="/InscreverAlunoPost")
     public @ResponseBody String inscreverAluno(@RequestParam String nome,
                                              @RequestParam String contacto,
+                                             @RequestParam String password,
                                              @RequestParam String dataNascimento,
                                              @RequestParam String proviniência) {
 
         AlunoEntity aluno = new AlunoEntity();
         aluno.setNome(nome);
         aluno.setContacto(contacto);
+        aluno.setPassword(password);
 
         // Conversão de dataNascimento de String para Timestamp
         try {
@@ -169,12 +185,14 @@ public class Main {
     @PostMapping(path="/InscreverProfessorPost")
     public @ResponseBody String inscreverProfessor(@RequestParam String nome,
                                                @RequestParam String contacto,
+                                               @RequestParam String password,
                                                @RequestParam String dataNascimento,
                                                @RequestParam String proviniência) {
 
         AlunoEntity professor = new AlunoEntity();
         professor.setNome(nome);
         professor.setContacto(contacto);
+        professor.setPassword(password);
         // Conversão de dataNascimento de String para Timestamp
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Formato para data sem hora
@@ -218,7 +236,22 @@ public class Main {
                         Model model) {
         boolean isAuthenticated = alunoService.authenticate(contacto, password);
         if(isAuthenticated) {
-            return "home";
+            userStatus = alunoService.getAluno(contacto).getStatus();
+            if (userStatus == 1) {
+                return "homeAluno";
+            }
+            else if (userStatus == 2) {
+                userId = alunoService.getAluno(contacto).getId();
+                return "homeProfessor";
+            }
+            else if (userStatus == 3) {
+                userId = alunoService.getAluno(contacto).getId();
+                return "homeAdmin";
+            }
+            else {
+                model.addAttribute("error", "Invalid contacto ou palavra passe");
+                return "index";
+            }
         }
         else {
             model.addAttribute("error", "Invalid contacto ou palavra passe");

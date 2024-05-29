@@ -14,4 +14,8 @@ public class AlunoService {
         AlunoEntity aluno = alunoInterface.findByContacto(contacto);
         return aluno != null && aluno.getPassword().equals(password);
     }
+
+    public AlunoEntity getAluno(String contacto) {
+        return alunoInterface.findByContacto(contacto);
+    }
 }
