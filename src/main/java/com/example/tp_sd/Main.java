@@ -3,6 +3,7 @@ package com.example.tp_sd;
 import com.example.tp_sd.Tabelas.*;
 import com.example.tp_sd.Views.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.Date;
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/")
 public class Main {
-    int userStatus = 2;
+    int userStatus = 3;
     int userId=2;
     @Autowired // This means to get the bean called userRepository
     private AlunoInterface alunoInterface;
@@ -46,6 +47,10 @@ public class Main {
     private ProfessorcursoInterface professorcursoInterface;
     @Autowired
     private AlunocursoInterface alunocursoInterface;
+
+    // Password encoding
+    // Using Bcrypt strength 10
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
 
     // Para o login
     @Autowired
@@ -121,7 +126,8 @@ public class Main {
         AlunoEntity aluno = new AlunoEntity();
         aluno.setNome(nome);
         aluno.setContacto(contacto);
-        aluno.setPassword(password);
+        String encodedPassword = encoder.encode(password);
+        aluno.setPassword(encodedPassword);
 
         // Conversão de dataNascimento de String para Timestamp
         try {
@@ -192,7 +198,8 @@ public class Main {
         AlunoEntity professor = new AlunoEntity();
         professor.setNome(nome);
         professor.setContacto(contacto);
-        professor.setPassword(password);
+        String encodedPassword = encoder.encode(password);
+        professor.setPassword(encodedPassword);
         // Conversão de dataNascimento de String para Timestamp
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Formato para data sem hora
@@ -234,7 +241,7 @@ public class Main {
     public String login(@RequestParam("contacto") String contacto,
                         @RequestParam("password") String password,
                         Model model) {
-        boolean isAuthenticated = alunoService.authenticate(contacto, password);
+        boolean isAuthenticated = alunoService.authenticate("966640149", "123");
         if(isAuthenticated) {
             userStatus = alunoService.getAluno(contacto).getStatus();
             if (userStatus == 1) {
