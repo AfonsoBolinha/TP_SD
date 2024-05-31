@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Mostrar Alunos</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div>
+    <h1>Administrator Management</h1>
+    <div style="text-align: center;">
+        For security reasons no write operations through the website when it comes to Administrators.
+    </div>
+    <hr>
+    <table class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Contacto</th>
+            <th>Data Nascimento</th>
+            <th>Proviniência</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="admin : ${admins}">
+            <td th:text="${admin.id}"></td>
+            <td th:text="${admin.nome}"></td>
+            <td th:text="${admin.contacto}"></td>
+            <td th:text="${#dates.format(admin.dataNascimento, 'dd/MM/yyyy')}"></td>
+            <td th:text="${admin.proviniência}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <a href="/homeAdmin" class="btn btn-back" style="float: left;">Voltar para Home</a>
+    </div>
+
+</div>
+</body>
+</html>
