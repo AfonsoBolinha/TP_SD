@@ -50,7 +50,7 @@ public class Main {
 
     // Password encoding
     // Using Bcrypt strength 10
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     // Para o login
     @Autowired
@@ -62,14 +62,17 @@ public class Main {
     }
     @GetMapping(path="/homeAluno")
     public String homeAluno(Model model) {
+        model.addAttribute("userStatus", userStatus);
         return "homeAluno";
     }
     @GetMapping(path="/homeProfessor")
     public String homeProfessor(Model model) {
+        model.addAttribute("userStatus", userStatus);
         return "homeProfessor";
     }
     @GetMapping(path="/homeAdmin")
     public String homeAdmin(Model model) {
+        model.addAttribute("userStatus", userStatus);
         return "homeAdmin";
     }
     @GetMapping(path="/Turma")
@@ -78,6 +81,7 @@ public class Main {
     }
     @GetMapping(path="/Estatisticas")
     public String estatisticas(Model model) {
+        model.addAttribute("userStatus", userStatus);
         return "Estatisticas/LandingEstatisticas";
     }
     @GetMapping(path="/cursos")
@@ -117,7 +121,7 @@ public class Main {
             return "Inscricao/InscreverAluno";
     }
     @PostMapping(path="/InscreverAlunoPost")
-    public @ResponseBody String inscreverAluno(@RequestParam String nome,
+    public String inscreverAluno(@RequestParam String nome,
                                              @RequestParam String contacto,
                                              @RequestParam String password,
                                              @RequestParam String dataNascimento,
@@ -142,7 +146,7 @@ public class Main {
         aluno.setProviniência(proviniência);
         aluno.setStatus(1);
         alunoInterface.save(aluno);
-        return "redirect:/";
+        return "redirect:/homeAdmin";
     }
 
     @GetMapping(path="/InscreverCurso")
@@ -157,7 +161,7 @@ public class Main {
         }
     }
     @PostMapping(path="/InscreverCursoPost")
-    public @ResponseBody String inscreverCurso(@RequestParam String nome,
+    public String inscreverCurso(@RequestParam String nome,
                                                @RequestParam Integer ano,
                                                @RequestParam Integer idProfessor,
                                                @RequestParam Integer nHoras) {
@@ -175,7 +179,7 @@ public class Main {
         participante.setIdCurso(idCurso);
         participante.setIdAluno(idProfessor);
         participanteInterface.save(participante);
-        return "redirect:/";
+        return "redirect:/adminHome";
     }
 
     @GetMapping(path="/InscreverProfessor")
@@ -189,7 +193,7 @@ public class Main {
         }
     }
     @PostMapping(path="/InscreverProfessorPost")
-    public @ResponseBody String inscreverProfessor(@RequestParam String nome,
+    public String inscreverProfessor(@RequestParam String nome,
                                                @RequestParam String contacto,
                                                @RequestParam String password,
                                                @RequestParam String dataNascimento,
@@ -213,7 +217,7 @@ public class Main {
         professor.setProviniência(proviniência);
         professor.setStatus(2);
         alunoInterface.save(professor);
-        return "redirect:/";
+        return "redirect:/homeAdmin";
     }
 
     @GetMapping(path="/MinhasTurmas")
@@ -236,12 +240,11 @@ public class Main {
 
 
     // Login
-    // Falta modificar algumas coisas
     @PostMapping(path="/login")
     public String login(@RequestParam("contacto") String contacto,
                         @RequestParam("password") String password,
                         Model model) {
-        boolean isAuthenticated = alunoService.authenticate("966640149", "123");
+        boolean isAuthenticated = alunoService.authenticate(contacto, password);
         if(isAuthenticated) {
             userStatus = alunoService.getAluno(contacto).getStatus();
             if (userStatus == 1) {
@@ -256,12 +259,12 @@ public class Main {
                 return "homeAdmin";
             }
             else {
-                model.addAttribute("error", "Invalid contacto ou palavra passe");
+                model.addAttribute("error", "Invalid contacto ou palavra passe, error Status");
                 return "index";
             }
         }
         else {
-            model.addAttribute("error", "Invalid contacto ou palavra passe");
+            model.addAttribute("error", "Invalid contacto ou palavra passe!!!");
             return "index";
         }
     }
