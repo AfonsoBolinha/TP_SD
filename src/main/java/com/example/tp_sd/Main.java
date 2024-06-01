@@ -278,6 +278,21 @@ public class Main {
         return "redirect:/showCursos";
     }
 
+    @GetMapping("/showUpdateCursoForm{id}")
+    public String showUpdateCursoForm(@PathVariable(value = "id") int id, Model model) {
+        Optional<CursoEntity> optional = cursoInterface.findById(id);
+        CursoEntity curso = null;
+        if(optional.isPresent()){
+            curso = optional.get();
+        }
+        else {
+            throw new RuntimeException("Curso not found for id :: " + id);
+        }
+        model.addAttribute("curso", curso);
+        model.addAttribute("professores", professoresInterface.findAll());
+        return "Show/updateCurso";
+    }
+
     @GetMapping(path="/InscreverProfessor")
     public String inscreverProfessor(Model model) {
         if (userStatus==3){

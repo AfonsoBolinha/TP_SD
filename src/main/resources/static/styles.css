@@ -117,6 +117,29 @@ form input {
     border-radius: 5px;
 }
 
+input[type="text"],
+input[type="number"],
+select {
+    width: calc(100% - 24px); /* Considere o padding de 12px em cada lado */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Inclui padding e border no total width e height */
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+select {
+    background-color: #fff;
+    appearance: none; /* Remove o estilo padrão do select no navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"><path d="M5.293 9.293a1 1 0 011.414 0L8 10.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
 form button {
     width: 100%;
     padding: 10px;
