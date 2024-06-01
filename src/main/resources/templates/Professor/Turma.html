@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Turma</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,8 +13,8 @@
         <tr>
             <th>Nome do Aluno</th>
             <th>Contacto</th>
-            <th>DataNascimento</th>
-            <th>Proveniência</th>
+            <th>Data de Nascimento</th>
+            <th>ProveniÃªncia</th>
         </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
             <td th:text="${aluno.nome}"></td>
             <td th:text="${aluno.contacto}"></td>
             <td th:text="${aluno.dataNascimento}"></td>
-            <td th:text="${aluno.proviniência}"></td>
+            <td th:text="${aluno.proveniencia}"></td> <!-- Corrigido aqui -->
         </tr>
         </tbody>
     </table>

@@ -16,19 +16,17 @@
             <th>Nome</th>
             <th>Ano</th>
             <th>ID Professor</th>
-            <th>Nome Professor</th>
             <th>Número de Horas</th>
             <th>Atualizar</th>
             <th>Apagar</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="curso, index: ${cursos}">
+        <tr th:each="curso: ${cursos}">
             <td th:text="${curso.id}"></td>
             <td th:text="${curso.nome}"></td>
             <td th:text="${curso.ano}"></td>
             <td th:text="${curso.idProfessor}"></td>
-            <td th:text="${nomesProfessores[__${index.index}__]}"></td>
             <td th:text="${curso.nHoras}"></td>
             <td> <a th:href="@{/showUpdateCursoForm{id}(id=${curso.id})}">Update</a></td>
             <td> <a th:href="@{/deleteCurso/{id}(id=${curso.id})}">Delete</a></td>

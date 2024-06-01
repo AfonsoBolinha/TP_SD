@@ -375,7 +375,7 @@ public class Main {
     //ERROR
     @GetMapping("/curso/{idCurso}")
     public String getCurso(@PathVariable("idCurso") int idCurso, Model model) {
-        model.addAttribute("alunos", alunocursoInterface.findAll());
+        model.addAttribute("alunos", alunocursoInterface.alunos(idCurso));
         return "Professor/Turma";
     }
     //ERROR

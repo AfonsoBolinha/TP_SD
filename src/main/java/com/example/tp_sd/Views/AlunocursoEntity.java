@@ -16,7 +16,7 @@ public class AlunocursoEntity {
     @Column(name = "Contacto")
     private String contacto;
     @Basic
-    @Column(name = "DataNascimento")
+    @Column(name = "Data_Nascimento")
     private Timestamp dataNascimento;
     @Basic
     @Column(name = "Proviniência")
@@ -27,7 +27,7 @@ public class AlunocursoEntity {
 
     @Basic
     @Id
-    @Column(name = "RowNum")
+    @Column(name = "ID_Coluna")
     private int rowNum;
 
     public String getNome() {

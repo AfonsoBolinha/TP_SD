@@ -17,18 +17,17 @@
     <button onclick="window.location.href='/deOndeVemOsNossosAlunos'">Proveniências</button>
 
     <div th:if="${userStatus == 1}">
-        <a href="/homeAluno">Voltar para o Home Aluno</a>
+        <a href="/homeAluno" class="btn btn-back">Voltar para o Home Aluno</a>
     </div>
     <div th:if="${userStatus == 2}">
-        <a href="/homeProfessor">Voltar para o Home Professor</a>
+        <a href="/homeProfessor" class="btn btn-back">Voltar para o Home Professor</a>
     </div>
     <div th:if="${userStatus == 3}">
-        <a href="/homeAdmin">Voltar para o Home Admin</a>
+        <a href="/homeAdmin" class="btn btn-back">Voltar para o Home Admin</a>
     </div>
     <div th:if="${userStatus != 1 and userStatus != 2 and userStatus != 3}">
-        <a href="/">Voltar para o Home</a>
+        <a href="/" class="btn btn-back">Voltar para o Home</a>
     </div>
-
 </div>
 </body>
 </html>
