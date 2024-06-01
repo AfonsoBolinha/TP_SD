@@ -6,24 +6,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Dar Notas</h1>
-    <form th:action="@{/darNotasPost}" th:object="${nota}" method="post">
-        <div>
-            <label for="idAluno">Aluno:</label>
-            <select id="idAluno" th:field="*{idAluno}" required>
-                <option value="">Selecione uma opção</option>
-                <!-- Iterar sobre os resultados da consulta e criar as opções -->
-                <option th:each="aluno : ${alunos}" th:value="${aluno.idAluno}" th:text="${aluno.alunoNome}"></option>
-            </select>
-        </div>
-        <div>
-            <label for="nota">Nota:</label>
-            <input type="number" id="nota" th:field="*{nota}" required/>
-        </div>
-        <div>
-            <button type="submit">Submeter</button>
-            <a class="btn btn-back">Voltar para Home</a>
-        </div>
-    </form>
+<h1>Dar Notas</h1>
+<form th:action="@{/darNotasPost}" th:object="${nota}" method="post">
+    <div>
+        <label for="idAluno">Aluno:</label>
+        <select id="idAluno" th:field="*{idAluno}" required>
+            <option value="">Selecione uma opção</option>
+            <option th:each="aluno : ${alunos}" th:value="${aluno.idAluno}" th:text="${aluno.alunoNome}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="nota">Nota:</label>
+        <input type="number" id="nota" th:field="*{nota}" required/>
+    </div>
+    <div>
+        <button type="submit">Submeter</button>
+        <a class="btn btn-back" href="/">Voltar para Home</a>
+    </div>
+</form>
 </body>
 </html>

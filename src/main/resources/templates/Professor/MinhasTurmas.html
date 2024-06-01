@@ -5,13 +5,11 @@
     <title>Minhas Turmas</title>
 </head>
 <body>
-<h1>Minhas Turmas</h1>
+<h1>Os meus cursos</h1>
 <div th:if="${cursos != null}">
     <ul>
         <li th:each="curso : ${cursos}">
-            <a th:href="@{'/darNotas/' + ${curso.idCurso}}">
-                <button type="button" th:text="${curso.nome}"></button>
-            </a>
+            <h5 th:text="${curso.nome}"></h5>
         </li>
     </ul>
 </div>
