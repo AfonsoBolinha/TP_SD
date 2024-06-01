@@ -7,21 +7,32 @@ import org.hibernate.annotations.Immutable;
 @Immutable
 @Table(name = "nota_aluno_curso", schema = "db_escolajardinagem", catalog = "")
 public class NotaAlunoCursoEntity {
-    @Id
-    private long id;
     @Basic
-    @Column(name = "Aluno_Nome")
+    @Id
+    @Column(name = "ID_Aluno", nullable = false)
+    private int idAluno;
+    @Basic
+    @Column(name = "Aluno_Nome", nullable = false, length = 45)
     private String alunoNome;
     @Basic
-    @Column(name = "Curso_Nome")
+    @Column(name = "Curso_Nome", nullable = false, length = 45)
     private String cursoNome;
     @Basic
-    @Column(name = "Nota")
+    @Column(name = "Nota", nullable = false, precision = 0)
     private double nota;
+    @Basic
+    @Column(name = "Id", nullable = false)
+    private int id;
+
+    public int getIdAluno() {
+        return idAluno;
+    }
+
 
     public String getAlunoNome() {
         return alunoNome;
     }
+
 
     public String getCursoNome() {
         return cursoNome;
@@ -31,7 +42,6 @@ public class NotaAlunoCursoEntity {
     public double getNota() {
         return nota;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -56,5 +66,13 @@ public class NotaAlunoCursoEntity {
         temp = Double.doubleToLongBits(nota);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

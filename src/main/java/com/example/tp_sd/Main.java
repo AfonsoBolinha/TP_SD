@@ -20,8 +20,9 @@ import java.util.Optional;
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/")
 public class Main {
+    int idCurso=0;
     int userStatus = 2;
-    int userId;
+    int userId=2;
     @Autowired // This means to get the bean called userRepository
     private AlunoInterface alunoInterface;
     @Autowired
@@ -48,8 +49,6 @@ public class Main {
     private AlunosInterface alunosInterface;
     @Autowired
     private ProfessorcursoInterface professorcursoInterface;
-    @Autowired
-    private AlunocursoInterface alunocursoInterface;
 
     // Password encoding
     // Using Bcrypt strength 10
@@ -367,15 +366,6 @@ public class Main {
         return "Show/updateProfessor";
     }
 
-    @GetMapping(path="/MinhasTurmas")
-    public String minhasTurmas(Model model) {
-        if (userStatus == 2) {
-            model.addAttribute("cursos", professorcursoInterface.minhasTurmas(userId));
-            return "Professor/MinhasTurmas";
-        } else {
-            return "redirect:/";
-        }
-    }
     @GetMapping(path="/minhasNotas")
     public String minhasNotas(Model model) {
         if (userStatus == 1) {
@@ -386,14 +376,35 @@ public class Main {
         }
     }
 
+    @GetMapping(path="/MinhasTurmas")
+    public String minhasTurmas(Model model) {
+        if (userStatus == 2) {
+            model.addAttribute("cursos", professorcursoInterface.minhasTurmas(userId));
+            return "Professor/MinhasTurmas";
+        } else {
+            return "redirect:/";
+        }
+    }
 
-    //ERROR
-    @GetMapping("/curso/{idCurso}")
+    @GetMapping("/darNotas/{idCurso}")
     public String getCurso(@PathVariable("idCurso") int idCurso, Model model) {
-        model.addAttribute("alunos", alunocursoInterface.alunos(idCurso));
+        this.idCurso = idCurso;
+        model.addAttribute("nota", new NotaEntity());
+        model.addAttribute("alunos", notaAlunoCursoInterface.findAll());
         return "Professor/Turma";
     }
-    //ERROR
+
+    @PostMapping(path="/darNotasPost")
+    public String darNotas(@RequestParam("idAluno") int idAluno,
+                           @RequestParam("nota") int nota,
+                           Model model) {
+        NotaEntity notaEntity = new NotaEntity();
+        notaEntity.setIdAluno(idAluno);
+        notaEntity.setIdCurso(idCurso);
+        notaEntity.setNota(nota);
+        notaInterface.save(notaEntity);
+        return "redirect:/darNotas/" + idCurso;
+    }
 
 
 

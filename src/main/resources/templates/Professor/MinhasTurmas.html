@@ -9,7 +9,7 @@
 <div th:if="${cursos != null}">
     <ul>
         <li th:each="curso : ${cursos}">
-            <a th:href="@{'/curso/' + ${curso.idCurso}}">
+            <a th:href="@{'/darNotas/' + ${curso.idCurso}}">
                 <button type="button" th:text="${curso.nome}"></button>
             </a>
         </li>
