@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.Collection;
 
 public interface ProfessorcursoInterface extends CrudRepository<ProfessorcursoEntity, Integer> {
-
     @Query(
             value = "SELECT * FROM professorcurso u WHERE u.ID_Aluno = :userId",
             nativeQuery = true)

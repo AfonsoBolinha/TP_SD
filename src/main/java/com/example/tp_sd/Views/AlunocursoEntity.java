@@ -24,6 +24,7 @@ public class AlunocursoEntity {
     @Basic
     @Column(name = "ID_Curso")
     private int idCurso;
+
     @Basic
     @Id
     @Column(name = "RowNum")
@@ -54,7 +55,7 @@ public class AlunocursoEntity {
     }
 
 
-    public Object getRowNum() {
+    public int getRowNum() {
         return rowNum;
     }
 

@@ -20,7 +20,7 @@ import java.util.Optional;
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/")
 public class Main {
-    int userStatus = 3;
+    int userStatus = 2;
     int userId=2;
     @Autowired // This means to get the bean called userRepository
     private AlunoInterface alunoInterface;
@@ -87,31 +87,38 @@ public class Main {
         model.addAttribute("userStatus", userStatus);
         return "Estatisticas/LandingEstatisticas";
     }
+
     @GetMapping(path="/cursos")
     public String cursos(Model model) {
         model.addAttribute("cursos", nparticipantesInterface.findAll());
         return "Estatisticas/Cursos";
     }
+    //Rota das estatisticas para aceder a lista de cursos em funcionamento, pode ser acedido por toda a gente
     @GetMapping(path="/cursosEmFuncionamento")
     public String cursosEmFuncionamento(Model model) {
         model.addAttribute("cursos", cursosfuncionamentoInterface.findAll());
         return "Estatisticas/CursosEmFuncionamento";
     }
+    //Rota das estatisticas para aceder ao numero de horas de cada curso, pode ser acedido por toda a gente
     @GetMapping(path="/horasDosCursos")
     public String horasDosCursos(Model model) {
         model.addAttribute("cursos", cursoInterface.findAll());
         return "Estatisticas/HorasDosCursos";
     }
+    //Rota das estatisticas para aceder ao numero de aprovações de cada curso, pode ser acedido por toda a gente
     @GetMapping(path="/aprovacoesDosCursos")
     public String aprovacoesDosCursos(Model model) {
         model.addAttribute("cursos", naprovacoesInterface.findAll());
         return "Estatisticas/AprovacoesDosCursos";
     }
+    //Rota das estatisticas para aceder a lista de idades medias dos cursos, pode ser acedido por toda a gente
     @GetMapping(path="/idadeMediaDeCurso")
     public String idadeMediaDeCurso(Model model) {
         model.addAttribute("cursos", idadeMediaInterface.findAll());
         return "Estatisticas/IdadeMediaDeCurso";
     }
+
+    //Rota das estatisticas para aceder a lista de sitios de onde vem os alunos, pode ser acedido por toda a gente
     @GetMapping(path="/deOndeVemOsNossosAlunos")
     public String deOndeVemOsNossosAlunos(Model model) {
         model.addAttribute("cursos", provenienciasInterface.findAll());
@@ -135,6 +142,8 @@ public class Main {
             return"redirect:/";
         }
     }
+    //Rota para inscrever um aluno, so pode ser feito por um administrador(Status=3)
+    //Recebe informação do aluno(nome, contacto, password, dataNascimento, proviniência)
     @PostMapping(path="/InscreverAlunoPost")
     public String inscreverOuAtualizarAluno(@RequestParam(required = false) Integer id,
                                                 @RequestParam String nome,
@@ -184,38 +193,6 @@ public class Main {
         return "redirect:/showAlunos";
     }
 
-    @GetMapping("/showUpdateAlunoForm{id}")
-    public String showUpdateAlunoForm(@PathVariable(value = "id") int id, Model model) {
-        Optional<AlunoEntity> optional = alunoInterface.findById(id);
-        AlunoEntity aluno = null;
-        if(optional.isPresent()){
-            aluno = optional.get();
-        }
-        else {
-            throw new RuntimeException("Aluno not found for id :: " + id);
-        }
-        model.addAttribute("aluno", aluno);
-        return "Show/updateAluno";
-    }
-
-
-    // ======================================== Cursos =================================================================
-    @GetMapping(path="/showCursos")
-    public String showCursos(Model model) {
-        List<String> nomesProfessores = new ArrayList<>();
-        List<CursoEntity> cursos = (List<CursoEntity>) cursoInterface.findAll();
-        for (CursoEntity curso : cursos) {
-            Optional<AlunoEntity> optionalProfessor = alunoInterface.findById(curso.getIdProfessor());
-            if (optionalProfessor.isPresent()) {
-                nomesProfessores.add(optionalProfessor.get().getNome());
-            } else {
-                nomesProfessores.add("Nome não encontrado");
-            }
-        }
-        model.addAttribute("nomesProfessores", nomesProfessores);
-        model.addAttribute("cursos", cursos);
-        return "Show/showCursos";
-    }
     @GetMapping(path="/InscreverCurso")
     public String inscreverCurso(Model model) {
         if (userStatus==3){
@@ -227,6 +204,8 @@ public class Main {
             return "redirect:/";
         }
     }
+    //Rota para inscrever um curso, so pode ser feito por um administrador(Status=3)
+    //Recebe informação do curso(nome, ano, idProfessor, nHoras)
     @PostMapping(path="/InscreverCursoPost")
     public String inscreverOuAtualizarCurso(@RequestParam(required = false) Integer id,
                                             @RequestParam String nome,
@@ -262,29 +241,6 @@ public class Main {
         return "redirect:/showCursos";
     }
 
-    @GetMapping("/showUpdateCursoForm{id}")
-    public String showUpdateCursoForm(@PathVariable(value = "id") int id, Model model) {
-        Optional<CursoEntity> optional = cursoInterface.findById(id);
-        CursoEntity curso = null;
-        if(optional.isPresent()){
-            curso = optional.get();
-        }
-        else {
-            throw new RuntimeException("Curso not found for id :: " + id);
-        }
-        List<AlunoEntity> professors = alunoInterface.findByStatus(2);
-        model.addAttribute("professores", professors);
-        model.addAttribute("curso", curso);
-        return "Show/updateCurso";
-    }
-
-    // ======================================== Professores ============================================================
-    @GetMapping(path="/showProfessores")
-    public String showProfessores(Model model) {
-        List<AlunoEntity> professores = (List<AlunoEntity>) alunoInterface.findByStatus(2);
-        model.addAttribute("professores", professores);
-        return "Show/showProfessores";
-    }
     @GetMapping(path="/InscreverProfessor")
     public String inscreverProfessor(Model model) {
         if (userStatus==3){
@@ -295,6 +251,8 @@ public class Main {
             return "redirect:/";
         }
     }
+    //Rota para inscrever um professor, so pode ser feito por um administrador(Status=3)
+    //Recebe informação do professor(nome, contacto, password, dataNascimento, proviniência)
     @PostMapping(path="/InscreverProfessorPost")
     public String inscreverOuAtualizarProfessor(@RequestParam(required = false) Integer id,
                                                 @RequestParam String nome,
@@ -357,16 +315,6 @@ public class Main {
         return "Show/updateProfessor";
     }
 
-    // ============================================= Alunos ============================================================
-    @GetMapping(path="/showAdmins")
-    public String showAdmins(Model model) {
-        List<AlunoEntity> admins = (List<AlunoEntity>) alunoInterface.findByStatus(3);
-        model.addAttribute("admins", admins);
-        return "Show/showAdmins";
-    }
-
-
-    // =================================================================================================================
     @GetMapping(path="/MinhasTurmas")
     public String minhasTurmas(Model model) {
         if (userStatus == 2) {
@@ -377,13 +325,15 @@ public class Main {
         }
     }
 
+
     //ERROR
     @GetMapping("/curso/{idCurso}")
     public String getCurso(@PathVariable("idCurso") int idCurso, Model model) {
-        model.addAttribute("alunos", alunocursoInterface.alunos(idCurso));
+        model.addAttribute("alunos", alunocursoInterface.findAll());
         return "Professor/Turma";
     }
     //ERROR
+
 
 
     // Login

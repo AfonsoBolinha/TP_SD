@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface AlunocursoInterface extends CrudRepository<AlunocursoEntity, Integer> {
     @Query(
-            value = "SELECT * FROM alunocurso u WHERE u.ID_Curso = 1",
+            value = "SELECT * FROM alunocurso u WHERE u.ID_Curso = :idCurso",
             nativeQuery = true)
     Collection<AlunocursoEntity> alunos(@Param("idCurso") int idCurso);
 
