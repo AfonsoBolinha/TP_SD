@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Minhas Turmas</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Os meus cursos</h1>
+<h1>As minhas turmas</h1>
 <div th:if="${cursos != null}">
     <ul>
         <li th:each="curso : ${cursos}">
             <h5 th:text="${curso.nome}"></h5>
         </li>
     </ul>
+</div>
+<div>
+    <a href="/homeProfessor" class="btn btn-back">Voltar para Home</a>
 </div>
 </body>
 </html>

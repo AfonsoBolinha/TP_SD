@@ -10,7 +10,7 @@ public class NotaAlunoCursoEntity {
     @Basic
     @Id
     @Column(name = "ID_Aluno", nullable = false)
-    private int idAluno;
+    private Integer idAluno;
     @Basic
     @Column(name = "Aluno_Nome", nullable = false, length = 45)
     private String alunoNome;
@@ -24,7 +24,7 @@ public class NotaAlunoCursoEntity {
     @Column(name = "Id", nullable = false)
     private int id;
 
-    public int getIdAluno() {
+    public Integer getIdAluno() {
         return idAluno;
     }
 

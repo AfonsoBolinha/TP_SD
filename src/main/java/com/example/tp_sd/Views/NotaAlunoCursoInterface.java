@@ -10,5 +10,5 @@ public interface NotaAlunoCursoInterface extends CrudRepository<NotaAlunoCursoEn
     @Query(
             value = "SELECT * FROM nota_aluno_curso u WHERE u.Id = :userId",
             nativeQuery = true)
-    Collection<NotaAlunoCursoEntity> minhasNotas(@Param("userId") int userId);
+    Collection<NotaAlunoCursoEntity> minhasNotas(@Param("userId") Integer userId);
 }

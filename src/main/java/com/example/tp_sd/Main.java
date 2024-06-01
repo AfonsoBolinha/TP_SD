@@ -387,9 +387,9 @@ public class Main {
     }
 
     @GetMapping("/darNotas/{idCurso}")
-    public String getCurso(@PathVariable("idCurso") int idCurso, Model model) {
+    public String getCurso(@PathVariable("idCurso") Integer idCurso, Model model) {
         this.idCurso = idCurso;
-        model.addAttribute("nota", new NotaEntity());
+        model.addAttribute("nota", new NotaEntity()); // Ensure a new instance is created
         model.addAttribute("alunos", notaAlunoCursoInterface.findAll());
         return "Professor/Turma";
     }
