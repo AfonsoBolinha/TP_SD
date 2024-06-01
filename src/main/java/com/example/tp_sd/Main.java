@@ -132,6 +132,20 @@ public class Main {
         return "Show/showAdmins";
     }
 
+    @GetMapping(path="/showProfessores")
+    public String showProfessores(Model model) {
+        List<AlunoEntity> professores = (List<AlunoEntity>) alunoInterface.findByStatus(2);
+        model.addAttribute("professores", professores);
+        return "Show/showProfessores";
+    }
+
+    @GetMapping(path="/showCursos")
+    public String showCursos(Model model) {
+        List<CursoEntity> cursos = (List<CursoEntity>) cursoInterface.findAll();
+        model.addAttribute("cursos", cursos);
+        return "Show/showCursos";
+    }
+
     // ============================================= Alunos ============================================================
     @GetMapping(path="/showAlunos")
     public String showAlunos(Model model) {
@@ -199,6 +213,22 @@ public class Main {
         alunoInterface.deleteById(id);
         return "redirect:/showAlunos";
     }
+
+    @GetMapping("/showUpdateAlunoForm{id}")
+    public String showUpdateAlunoForm(@PathVariable(value = "id") int id, Model model) {
+        Optional<AlunoEntity> optional = alunoInterface.findById(id);
+        AlunoEntity aluno = null;
+        if(optional.isPresent()){
+            aluno = optional.get();
+        }
+        else {
+            throw new RuntimeException("Aluno not found for id :: " + id);
+        }
+        model.addAttribute("aluno", aluno);
+        return "Show/updateAluno";
+    }
+
+    // ============================================= Cursos ============================================================
 
     @GetMapping(path="/InscreverCurso")
     public String inscreverCurso(Model model) {
