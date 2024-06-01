@@ -21,7 +21,7 @@ import java.util.Optional;
 @RequestMapping(path="/")
 public class Main {
     int userStatus = 2;
-    int userId=2;
+    int userId;
     @Autowired // This means to get the bean called userRepository
     private AlunoInterface alunoInterface;
     @Autowired
@@ -123,6 +123,13 @@ public class Main {
     public String deOndeVemOsNossosAlunos(Model model) {
         model.addAttribute("cursos", provenienciasInterface.findAll());
         return "Estatisticas/DeOndeVemOsNossosAlunos";
+    }
+
+    @GetMapping(path="/showAdmins")
+    public String showAdmins(Model model) {
+        List<AlunoEntity> admins = (List<AlunoEntity>) alunoInterface.findByStatus(3);
+        model.addAttribute("admins", admins);
+        return "Show/showAdmins";
     }
 
     // ============================================= Alunos ============================================================
@@ -324,6 +331,15 @@ public class Main {
             return "redirect:/";
         }
     }
+    @GetMapping(path="/minhasNotas")
+    public String minhasNotas(Model model) {
+        if (userStatus == 1) {
+            model.addAttribute("notas", notaAlunoCursoInterface.minhasNotas(userId));
+            return "Aluno/MinhasNotas";
+        } else {
+            return "redirect:/";
+        }
+    }
 
 
     //ERROR
@@ -345,6 +361,7 @@ public class Main {
         if(isAuthenticated) {
             userStatus = alunoService.getAluno(contacto).getStatus();
             if (userStatus == 1) {
+                userId = alunoService.getAluno(contacto).getId();
                 return "homeAluno";
             }
             else if (userStatus == 2) {

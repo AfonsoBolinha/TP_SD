@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Notas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="notas-container">
+    <h1>Minhas Notas</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Disciplina</th>
+            <th>Nota</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="nota : ${notas}">
+            <td th:text="${nota.cursoNome}"></td>
+            <td th:text="${nota.nota}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
