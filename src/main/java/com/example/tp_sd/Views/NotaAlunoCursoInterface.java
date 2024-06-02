@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface NotaAlunoCursoInterface extends CrudRepository<NotaAlunoCursoEntity, Integer>{
     @Query(
-            value = "SELECT * FROM nota_aluno_curso u WHERE u.Id = :userId",
+            value = "SELECT * FROM nota_aluno_curso u WHERE u.ID_Aluno = :userId",
             nativeQuery = true)
     Collection<NotaAlunoCursoEntity> minhasNotas(@Param("userId") Integer userId);
 }

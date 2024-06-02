@@ -8,7 +8,6 @@ import org.hibernate.annotations.Immutable;
 @Table(name = "nota_aluno_curso", schema = "db_escolajardinagem", catalog = "")
 public class NotaAlunoCursoEntity {
     @Basic
-    @Id
     @Column(name = "ID_Aluno", nullable = false)
     private Integer idAluno;
     @Basic
@@ -21,6 +20,7 @@ public class NotaAlunoCursoEntity {
     @Column(name = "Nota", nullable = false, precision = 0)
     private double nota;
     @Basic
+    @Id
     @Column(name = "Id", nullable = false)
     private int id;
 
